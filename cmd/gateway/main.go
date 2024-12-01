@@ -26,7 +26,6 @@ func main() {
 		http.Handle("/", http.FileServer(http.Dir("./static")))
 	}
 	http.HandleFunc("/api", apiRoute)
-	http.HandleFunc("/js", apiRoute)
 
 	log.Fatal(listener(portStr, nil))
 }
