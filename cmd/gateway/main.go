@@ -19,6 +19,11 @@ func main() {
 		listener = http.ListenAndServe
 		http.Handle("/", http.FileServer(http.Dir("./static")))
 	}
+	http.HandleFunc("/api", apiRoute)
 
 	log.Fatal(listener(portStr, nil))
+}
+
+func apiRoute(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "api route")
 }
