@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -8,6 +9,11 @@ import (
 
 	"github.com/carlmjohnson/gateway"
 )
+
+type apiResponse struct {
+	Url    string `json:"url"`
+	Method string `json:"method"`
+}
 
 func main() {
 	port := flag.Int("port", -1, "specify a port to use http rather than AWS Lambda")
@@ -25,5 +31,13 @@ func main() {
 }
 
 func apiRoute(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "api route")
+	apiRouteRes := &apiResponse{
+		Url:    "/api",
+		Method: r.Method,
+	}
+	jsonRes, err := json.Marshal(apiRouteRes)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Write(jsonRes)
 }
