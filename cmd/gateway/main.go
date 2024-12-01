@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"text/template"
 
 	"github.com/carlmjohnson/gateway"
 )
@@ -45,7 +44,7 @@ func apiRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func jsPage(w http.ResponseWriter, r *http.Request) {
-	htmlPage := `
+	htmlPage := fmt.Sprintf(`
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,10 +59,11 @@ func jsPage(w http.ResponseWriter, r *http.Request) {
 <body>
     <h1>Go Web App on Netlify</h1>
     <h4>Super Speedy Website</h4>
-    <h4>{{.}}</h4>
+    <h4>%s</h4>
 </body>
 </html>
-`
-	var htmlTemplate = template.Must(template.New("").Parse(htmlPage))
-	htmlTemplate.Execute(w, r.Host+"/js")
+`, r.Host+"/js")
+	w.Write([]byte(htmlPage))
+	// var htmlTemplate = template.Must(template.New("").Parse(htmlPage))
+	// htmlTemplate.Execute(w, r.Host+"/js")
 }
